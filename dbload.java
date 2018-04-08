@@ -48,6 +48,8 @@ class dbload {
 			String currentLine; //to store current read line
 			String[] sL = new String[9]; //tokenise of currentLine
 
+			br.readLine(); //skip header
+
 			while(br.ready()) {
 				currentLine = br.readLine();
 				sL = currentLine.split("\t", -1);
@@ -59,8 +61,19 @@ class dbload {
 				String renew_date = sL[5];
 				String state_num = sL[6];
 				String state_registered = sL[7];
-				int abn = Integer.parseInt(sL[8]);
+				long abn = ((sL[8].equals("")) ? -1 : Long.parseLong(sL[8]));
+
+				os.writeBytes(business_name);
+				os.writeBoolean(registered);
+				os.writeBytes(registration_date);
+				os.writeBytes(cancel_date);
+				os.writeBytes(renew_date);
+				os.writeBytes(state_num);
+				os.writeBytes(state_registered);
+				os.writeLong(abn);
 			}
+
+			os.close();
 		}
 		catch (Exception e) {
 			e.printStackTrace();
