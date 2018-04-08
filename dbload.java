@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
+import java.io.DataOutputStream;
 
 
 class dbload {
@@ -35,18 +36,34 @@ class dbload {
             return;
         }
 
-        short pagesize = cmd.getOptionValue("pagesize");
+        try {
 
-		File input = new File(cmd.getOptionValue("filepath"));
-		BufferedReader br = new BufferedReader(new FileReader(input));
+	        int pagesize = Integer.parseInt(cmd.getOptionValue("pagesize"));
 
-		DataOutputStream os = new DataOutputStream(new FileOutputStream("binout.dat"));
+			File input = new File(cmd.getOptionValue("filepath"));
+			BufferedReader br = new BufferedReader(new FileReader(input));
 
-		String currentLine; //to store current read line
-		String[] sL = new String[9]; //tokenise of currentLine
+			DataOutputStream os = new DataOutputStream(new FileOutputStream("binout.dat"));
 
+			String currentLine; //to store current read line
+			String[] sL = new String[9]; //tokenise of currentLine
 
+			while(br.ready()) {
+				currentLine = br.readLine();
+				sL = currentLine.split("\t", -1);
 
-
+				String business_name = sL[1];
+				boolean registered = ((sL[2].equals("Registered")) ? true : false);
+				String registration_date = sL[3];
+				String cancel_date = sL[4];
+				String renew_date = sL[5];
+				String state_num = sL[6];
+				String state_registered = sL[7];
+				int abn = Integer.parseInt(sL[8]);
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
